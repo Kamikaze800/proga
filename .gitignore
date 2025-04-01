@@ -1,0 +1,38 @@
+# --- бинарные файлы ---
+*.exe
+*.o
+*.obj
+*.out
+*.a
+*.so
+*.dll
+
+# --- файлы сборки ---
+build/
+bin/
+debug/
+release/
+*.log
+
+# --- временные файлы ---
+*.tmp
+*.swp
+*.swo
+*.bak
+*.d
+
+# --- VS Code ---
+.vscode/
+
+# --- CMake (если используешь) ---
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+
+# --- настройки системы ---
+.DS_Store      # macOS
+Thumbs.db      # Windows
+
+# --- резервное ---
+*~
