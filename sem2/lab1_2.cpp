@@ -45,7 +45,8 @@ int main() {
     printf("Введите текст - ");
     char* text = (char*)malloc(MAX_SIM_IN_TEXT);
     char* newText = (char*)malloc(MAX_SIM_IN_TEXT);    
-    fgets(text, MAX_SIM_IN_TEXT, stdin);
+    FILE *file = fopen("data.txt", "r"); 
+    fgets(text, MAX_SIM_IN_TEXT, file);
 
     int i = 0, j = 0, k = 0;
     // j - индекс для старого текста

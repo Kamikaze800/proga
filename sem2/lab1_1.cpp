@@ -43,13 +43,13 @@ void copyStr(char* s1, char* s2) {
 int main() {
     SetConsoleCP(1251);
     SetConsoleOutputCP(1251);
-    const int MAX_SIM_IN_TEXT = 500; 
-    char* text; 
+    const int MAX_SIM_IN_TEXT = 500;
+    char* text;
     char oldWord[] = "del";
     char newWord[] = "Insert";
     int oldLen = getLength(oldWord);
     int newLen = getLength(newWord);
-    
+
     char ch;
     printf("\nпрограмма выполнена с использованием стандартных функций\n\
 макс. кол-во символов в тексте %d\n\
@@ -63,16 +63,16 @@ del будето заменено на Insert\n", MAX_SIM_IN_TEXT);
             i += 1;
         }
         text[i] = ' ';
-        text[i+1] = '\0';
+        text[i + 1] = '\0';
 
         int globalCount = 0;
-        char* word = (char*)malloc(MAX_SIM_IN_TEXT); 
+        char* word = (char*)malloc(MAX_SIM_IN_TEXT);
 
         for (i = 0, j = 0; text[i] != '\0'; i++, j++) {
-            word[j] = text[i]; 
+            word[j] = text[i];
             if (text[i] == ' ') {
                 word[j] = '\0';
-                int count = 0; 
+                int count = 0;
                 printf("в слове ");
                 for (j = 0; word[j] != '\0'; j++)
                 {
@@ -82,27 +82,27 @@ del будето заменено на Insert\n", MAX_SIM_IN_TEXT);
                 }
                 if (count == 1)
                     printf(" %d замена", count);
-                else if(count == 2 || count == 3|| count ==4)
+                else if (count == 2 || count == 3 || count == 4)
                     printf(" %d замены ", count);
                 else
                     printf(" %d замен", count);
                 printf("\n");
                 globalCount += count;
-                word[0] = '\0'; 
+                word[0] = '\0';
                 j = -1;
-           }
-        }     
+            }
+        }
 
         int newTextL = (getLength(text) + globalCount * (newLen - oldLen) + 1);
         char* newText = (char*)malloc(newTextL);
 
         i = 0;
         while (text[i] != '\0') {
-            if (cmpStr(&text[i], oldWord, oldLen)) { 
+            if (cmpStr(&text[i], oldWord, oldLen)) {
 
-                copyStr(&newText[j], newWord); 
-                i += oldLen; 
-                j += newLen; 
+                copyStr(&newText[j], newWord);
+                i += oldLen;
+                j += newLen;
             }
             else {
                 newText[j++] = text[i++];
