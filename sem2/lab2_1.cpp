@@ -56,19 +56,20 @@ int main() {
     char ch; 
     char st[N][M];
     int i = 0, j = 0, k = 0;
-    FILE *file = fopen("lab2_1.txt", "r"); 
+    // FILE *file = fopen("lab2_1.txt", "r"); 
     int count_st = 0;
     i=0;
-    while(fgets(st[i], M, file)){
-        st[i][strcspn(st[i], "\n")] = '\0';
-        printf("%s\n", st[i]);
-        i++;
-    }
+    fgets(st[i], M, stdin);
+    // while(fgets(st[i], M, stdin)){
+    //     st[i][strcspn(st[i], "\n")] = '\0';
+    //     printf("%s\n", st[i]);
+    //     i++;
+    // }
     count_st = i;
     // FILE *param = fopen("lab2_1_param.txt", "r"); 
     char* param = (char*)malloc(M);
     fgets(param, M ,stdin);
-    param[strcspn(st[i], "\n")] = '\0';
+    param[strcspn(param, "\n")] = '\0';
     char* token = strtok(param, " ");
     char* drug_param = token;
     token = strtok(NULL, " ");
@@ -99,7 +100,6 @@ int main() {
             k++;
         }
     }
-    fclose(file);
     printf("\nНажмите любую клавишу для повторения, Esc — выход...\n");
     return 0;
 }
