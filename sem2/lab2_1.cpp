@@ -57,15 +57,19 @@ int main() {
     char st[N][M];
     int i = 0, j = 0, k = 0;
     // FILE *file = fopen("lab2_1.txt", "r"); 
+    printf("введите данные\n");
     int count_st = 0;
     i=0;
-    fgets(st[i], M, stdin);
-    // while(fgets(st[i], M, stdin)){
-    //     st[i][strcspn(st[i], "\n")] = '\0';
-    //     printf("%s\n", st[i]);
-    //     i++;
-    // }
+    // fgets(st[i], M, stdin);
+    while(fgets(st[i], M, stdin)){
+        if(st[i][0] = '\n') break;
+        st[i][strcspn(st[i], "\n")] = '\0';
+        printf("%s\n", st[i]);
+        i++;
+    }
     count_st = i;
+
+    printf("введи запрос:\n");
     // FILE *param = fopen("lab2_1_param.txt", "r"); 
     char* param = (char*)malloc(M);
     fgets(param, M ,stdin);
