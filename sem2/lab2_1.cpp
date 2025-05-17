@@ -1,109 +1,121 @@
-// № 6 Массив строк «Лекарства. Аптеки»
+// № 48 Массив строк «Жилые дома»
 // Каждая строка содержит:
-// - название лекарства;
-// - страна-производитель;
-// - дата производства;
-// - номера аптек, имеющих это лекарство;
-// - цена.
+// ? Наименование улицы;
+// ? номер дома;
+// ? год сдачи в эксплуатацию;
+// ? площадь земельного участка;
+// ? количество этажей;
+// ? количество квартир;
+// ? количество жильцов, зарегистрированных в доме.
 // Например:
-// Анальгин Россия 21.02.08 7,9, 15 40.10
-// Запрос: есть ли определенное лекарство с датой производства не ранее некоторой
-// заданной и ценой не выше некоторой заданной.
+// Светлая 7 2018 10000 9 36 102
+// Запрос: составить список домов (номера домов), сданных в эксплуатацию не позднее
+// указанного года, имеющих площадь земельного участка не меньше заданной площади и
+// количество жильцов - не больше заданного количества.
 
 #define _CRT_SECURE_NO_WARNINGS
-#define _CRT_SECURE_NO_DEPRECATE  
-#define _CRT_NONSTDC_NO_DEPRECATE
-
 #include <stdio.h>
-#include <windows.h>
 #include <stdlib.h>
 #include <string.h>
-#include <conio.h>  
+#include <windows.h>
+#include <conio.h>
 
-#define N 10    // Максимум строк
-#define M 100     // Максимальная длина строки
-
-int cmpDate(char* date,char* date_param){
-    char* token = strtok(date_param, ".");
-    int day_param = atoi(token);
-    token = strtok(NULL, ".");
-    int month_param = atoi(token);
-    token = strtok(NULL, ".");
-    int year_param = atoi(token);
-
-    token = strtok(date, ".");
-    int day = atoi(token);
-    token = strtok(NULL, ".");
-    int month = atoi(token);
-    token = strtok(NULL, ".");
-    int year = atoi(token);
-
-    if (year>year_param){
-        return 1;
-    } else if(year==year_param && month > month_param){
-        return 1;
-    } else if(year==year_param && month==month_param && day>day_param){
-        return 1;
-    } else{
-        return 0;
-    }
-}
+#define N 10  // кол-во строк
+#define M 100   // длина строки
 
 int main() {
     SetConsoleCP(1251);
-    SetConsoleOutputCP(1251);;
+    SetConsoleOutputCP(1251);
 
-    char ch; 
-    char st[N][M];
-    int i = 0, j = 0, k = 0;
-    // FILE *file = fopen("lab2_1.txt", "r"); 
-    printf("введите данные\n");
-    int count_st = 0;
-    i=0;
-    // fgets(st[i], M, stdin);
-    while(fgets(st[i], M, stdin)){
-        if(st[i][0] = '\n') break;
+    char st[N][M]; // массив строк
+    int i = 0;
+    int ch;
+    do{
+    printf("Введите данные о домах (одна строка — один дом):\n");
+    printf("Формат: [улица] [номер] [год] [площадь] [этажей] [квартир] [жильцов]\n");
+    printf("Пустая строка завершает ввод\n\n");
+
+    while (i < N && fgets(st[i], M, stdin)) {
+        if (st[i][0] == '\n') break;
         st[i][strcspn(st[i], "\n")] = '\0';
-        printf("%s\n", st[i]);
         i++;
     }
-    count_st = i;
+    int count = i;
 
-    printf("введи запрос:\n");
-    // FILE *param = fopen("lab2_1_param.txt", "r"); 
-    char* param = (char*)malloc(M);
-    fgets(param, M ,stdin);
-    param[strcspn(param, "\n")] = '\0';
-    char* token = strtok(param, " ");
-    char* drug_param = token;
-    token = strtok(NULL, " ");
-    char* date_param = token;
-    token = strtok(NULL, " ");
-    char* price_param = token;
-    // printf("%s %s %s", drug_param, date_param, price_param);
+    char buf[100]; // буфер для строкового ввода
 
-    printf("Под ваш запрос подходит следующие записи\n");
-    i=0;
-    for(i=0;i<count_st;i++){
-        char *token = strtok(st[i], " ");
-        char *drug = token;
-        token = strtok(NULL, " ");
-        char *country = token;
-        token = strtok(NULL, " ");
-        char *date = token;
-        char date_copy[M];
-        strcpy(date_copy, date);
-        token = strtok(NULL, " ");
-        char *aptekes = token;
-        token = strtok(NULL, " ");
-        char *price = token;
+    // Ввод параметров запроса
+    int year_limit, area_limit, people_limit;
 
-        k=0;
-        if(strcmp(drug, drug_param) == 0 && cmpDate(date, date_param)==1 && atoi(price)<=atoi(price_param)){
-            printf("%s %s %s %s %s", drug, country, date_copy, aptekes, price);
-            k++;
+    // ===== Защищённый ввод: ГОД =====
+    while (1) {
+        printf("\nВведите максимальный год: ");
+        fgets(buf, sizeof(buf), stdin);
+        buf[strcspn(buf, "\n")] = '\0';
+        if (strlen(buf) == 0) {
+            printf("Поле не может быть пустым!\n");
+            continue;
+        }
+        year_limit = atoi(buf);
+        if (year_limit > 1800 && year_limit < 2100) break;
+        printf("Введите корректный год (от 1800 до 2100)\n");
+    }
+    
+    // ===== Защищённый ввод: ПЛОЩАДЬ =====
+    while (1) {
+        printf("Введите минимальную площадь: ");
+        fgets(buf, sizeof(buf), stdin);
+        buf[strcspn(buf, "\n")] = '\0';
+        area_limit = atoi(buf);
+        if (area_limit > 0) break;
+        printf("Площадь должна быть положительным числом\n");
+    }
+    
+    // ===== Защищённый ввод: КОЛ-ВО ЖИЛЬЦОВ =====
+    while (1) {
+        printf("Введите максимум жильцов: ");
+        fgets(buf, sizeof(buf), stdin);
+        buf[strcspn(buf, "\n")] = '\0';
+        people_limit = atoi(buf);
+        if (people_limit > 0) break;
+        printf("Число жильцов должно быть положительным\n");
+    }
+    
+
+    printf("\nПодходящие дома (номера):\n");
+
+    for (i = 0; i < count; i++) {
+        char line_copy[M];
+        strcpy(line_copy, st[i]);
+
+        char* token = strtok(line_copy, " ");
+        char* street = token;
+
+        token = strtok(NULL, " ");
+        char* house_number = token;
+
+        token = strtok(NULL, " ");
+        int year = atoi(token);
+
+        token = strtok(NULL, " ");
+        int area = atoi(token);
+
+        token = strtok(NULL, " ");
+        int floors = atoi(token);
+
+        token = strtok(NULL, " ");
+        int apartments = atoi(token);
+
+        token = strtok(NULL, " ");
+        int people = atoi(token);
+
+        if (year <= year_limit && area >= area_limit && people <= people_limit) {
+            printf("Улица: %s, Дом №: %s\n", street, house_number);
         }
     }
-    printf("\nНажмите любую клавишу для повторения, Esc — выход...\n");
+
+    printf("\nНажмите любую клавишу, чтобы бы продолжить, либо ESC выхода\n");
+    ch = _getch();
+    }while(ch!=27);
     return 0;
 }

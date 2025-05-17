@@ -1,73 +1,83 @@
-// № 6 Массив строк «Лекарства. Аптеки»
-// Каждая строка содержит:
-// - название лекарства;
-// - страна-производитель;
-// - дата производства;
-// - номера аптек, имеющих это лекарство;
-// - цена.
-// Например:
-// Анальгин Россия 21.02.08 7,9, 15 40.10
-// Запрос: есть ли определенное лекарство с датой производства не ранее некоторой
-// заданной и ценой не выше некоторой заданной.
-
 #define _CRT_SECURE_NO_WARNINGS
-#define _CRT_SECURE_NO_DEPRECATE  
-#define _CRT_NONSTDC_NO_DEPRECATE
 
 #include <stdio.h>
-#include <windows.h>
-#include <stdlib.h>
 #include <string.h>
-#include <conio.h>  
+#include <ctype.h>
+#include <conio.h>
+#include <windows.h>
 
-#define N 10    // Максимум строк
-#define M 100     // Максимальная длина строки
-
-int cmpDate(char* date,char* date_param){
-    char* token = strtok(date_param, ".");
-    int day_param = atoi(token);
-    token = strtok(NULL, ".");
-    int month_param = atoi(token);
-    token = strtok(NULL, ".");
-    int year_param = atoi(token);
-
-    token = strtok(date, ".");
-    int day = atoi(token);
-    token = strtok(NULL, ".");
-    int month = atoi(token);
-    token = strtok(NULL, ".");
-    int year = atoi(token);
-
-    if (year>year_param){
-        return 1;
-    } else if(year==year_param && month > month_param){
-        return 1;
-    } else if(year==year_param && month==month_param && day>day_param){
-        return 1;
-    } else{
-        return 0;
-    }
-}
+struct Student
+{
+    char surname[16];
+    int exam[5];
+} student[30];
 
 int main() {
     SetConsoleCP(1251);
-    SetConsoleOutputCP(1251);;
+    SetConsoleOutputCP(1251);
 
-    char ch; 
-    char st[N][M];
-    int i = 0, j = 0, k = 0;
-    // FILE *file = fopen("lab2_1.txt", "r"); 
-    int count_st = 0;
-    i=0;
-    fgets(st[i], M, stdin);
-    // while(fgets(st[i], M, stdin)){
-    //     st[i][strcspn(st[i], "\n")] = '\0';
-    //     printf("%s\n", st[i]);
-    //     i++;
-    // }
-    count_st = i;
-    printf("%s", st[i]);
-    printf("\nНажмите любую клавишу для повторения, Esc — выход...\n");
-    _getch();
+    int n, a, i, j;
+    printf("Введите кол-во студентов\n");
+    do {
+        scanf("%d", &n);
+    } while (n < 1 || n>30);
+    while (getchar() != '\n');
+
+    printf("\nВведите кол-во оценок\n");
+    do {
+        scanf("%d", &a);
+    } while (a < 0 || a>5);
+    while (getchar() != '\n');
+
+    printf("Введите для каждого студента фамилию и оценки");
+
+    for (i = 0; i < n; i++) {
+        printf("\n#%d). Фамилия: ", i + 1);
+        do {
+            scanf("%s", &student[i].surname);
+            while (getchar() != '\n');
+        } while (student[i].surname[0] == '\n');
+
+        for (j = 0; j < a; j++) {
+            do {
+                printf("        %d-оценка: ", j + 1);
+                scanf("%d", &student[i].exam[j]);
+                while (getchar() != '\n');
+            } while (student[i].exam[j] < 0 || student[i].exam[j] > 5);
+        }
+    }
+
+    printf("\nВывод массива:");
+
+    for (i = 0; i < n; i++) {
+        printf("\nСтудент: %-15s | Оценки: ", student[i].surname);
+        for (j = 0; j < a; j++)
+            printf("%d ", student[i].exam[j]);
+    }
+
+    printf("\n");
+
+    int res1=0, res2=0;
+    int f1, f2;
+    for (i = 0; i < n; i++) {
+        f1=1;
+        f2=1;
+        for (j = 0; j < a; j++){
+            if(student[i].exam[j] != 4 && student[i].exam[j] != 5){
+                f1 = 0;
+                
+            }
+            if(student[i].exam[j] != 5){
+                f2=0;
+               
+            }
+        }
+        if(f1)res1++;
+        if(f2)res2++;
+    }
+    printf("кол-во студентов, у которых только 4 или 5: %d\n", res1);
+    printf("кол-во студентов, у которых только 5: %d", res2);
+
+    char ch = _getch();
     return 0;
 }
